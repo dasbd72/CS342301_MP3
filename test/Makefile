@@ -112,9 +112,10 @@ ifeq ($(hosttype),unknown)
 PROGRAMS = unknownhost
 else
 # change this if you create a new test program!
-#PROGRAMS = add halt shell matmult sort segments test1 test2 a
-#PROGRAMS = add halt createFile fileIO_test1 fileIO_test2 LotOfAdd
-PROGRAMS = consoleIO_test1 consoleIO_test2
+# PROGRAMS = add halt shell matmult sort segments test1 test2 a
+# PROGRAMS = add halt createFile fileIO_test1 fileIO_test2 LotOfAdd
+# PROGRAMS = consoleIO_test1 consoleIO_test2 consoleIO_test3 MP2_MLE_test MP2_array_test MP2_array_test2 MP2_readonly_test
+PROGRAMS = hw3t1 hw3t2 hw3t3
 endif
 
 all: $(PROGRAMS)
@@ -203,11 +204,44 @@ createFile: createFile.o start.o
 	$(LD) $(LDFLAGS) start.o createFile.o -o createFile.coff
 	$(COFF2NOFF) createFile.coff createFile
 
-mytest.o: mytest.c
-	$(CC) $(CFLAGS) -c mytest.c
-mytest: mytest.o start.o
-	$(LD) $(LDFLAGS) start.o mytest.o -o mytest.coff
-	$(COFF2NOFF) mytest.coff mytest
+MP2_array_test: MP2_array_test.c
+	$(CC) $(CFLAGS) -c MP2_array_test.c
+MP2_array_test: MP2_array_test.o start.o
+	$(LD) $(LDFLAGS) start.o MP2_array_test.o -o MP2_array_test.coff
+	$(COFF2NOFF) MP2_array_test.coff MP2_array_test
+
+MP2_array_test2: MP2_array_test2.c
+	$(CC) $(CFLAGS) -c MP2_array_test2.c
+MP2_array_test2: MP2_array_test2.o start.o
+	$(LD) $(LDFLAGS) start.o MP2_array_test2.o -o MP2_array_test2.coff
+	$(COFF2NOFF) MP2_array_test2.coff MP2_array_test2
+
+MP2_readonly_test: MP2_readonly_test.c
+	$(CC) $(CFLAGS) -c MP2_readonly_test.c
+MP2_readonly_test: MP2_readonly_test.o start.o
+	$(LD) $(LDFLAGS) start.o MP2_readonly_test.o -o MP2_readonly_test.coff
+	$(COFF2NOFF) MP2_readonly_test.coff MP2_readonly_test
+
+MP2_MLE_test: MP2_MLE_test.c
+	$(CC) $(CFLAGS) -c MP2_MLE_test.c
+MP2_MLE_test: MP2_MLE_test.o start.o
+	$(LD) $(LDFLAGS) start.o MP2_MLE_test.o -o MP2_MLE_test.coff
+	$(COFF2NOFF) MP2_MLE_test.coff MP2_MLE_test
+
+hw3t1: hw3t1.c start.o
+	$(CC) $(CFLAGS) -c hw3t1.c
+	$(LD) $(LDFLAGS) start.o hw3t1.o -o hw3t1.coff
+	$(COFF2NOFF) hw3t1.coff hw3t1
+
+hw3t2: hw3t2.c start.o
+	$(CC) $(CFLAGS) -c hw3t2.c
+	$(LD) $(LDFLAGS) start.o hw3t2.o -o hw3t2.coff
+	$(COFF2NOFF) hw3t2.coff hw3t2
+
+hw3t3: hw3t3.c start.o
+	$(CC) $(CFLAGS) -c hw3t3.c
+	$(LD) $(LDFLAGS) start.o hw3t3.o -o hw3t3.coff
+	$(COFF2NOFF) hw3t3.coff hw3t3
 
 clean:
 	$(RM) -f *.o *.ii
@@ -215,7 +249,6 @@ clean:
 
 distclean: clean
 	$(RM) -f $(PROGRAMS)
-	$(RM) -f *.test
 
 unknownhost:
 	@echo Host type could not be determined.
