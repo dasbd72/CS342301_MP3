@@ -47,6 +47,14 @@ Thread::Thread(char *threadName, int threadID) {
                                  // of machine registers
     }
     space = NULL;
+    // MP3
+    priority = 0;
+    nextBurstTick = 0.0;
+    burstTick = 0;
+    startBurstTick = 0;
+    startRunningTick = 0;
+    startWaitingTick = 0;
+    // MP3 end
 }
 
 //----------------------------------------------------------------------
@@ -166,6 +174,9 @@ void Thread::Finish() {
     ASSERT(this == kernel->currentThread);
 
     DEBUG(dbgThread, "Finishing thread: " << name);
+    // MP3
+    RunningToTerminate();
+    // MP3 end
     Sleep(TRUE);  // invokes SWITCH
     // not reached
 }
@@ -198,6 +209,9 @@ void Thread::Yield() {
 
     nextThread = kernel->scheduler->FindNextToRun();
     if (nextThread != NULL) {
+        // MP3
+        this->RunningToReady();
+        // MP3 end
         kernel->scheduler->ReadyToRun(this);
         kernel->scheduler->Run(nextThread, FALSE);
     }
@@ -253,6 +267,7 @@ void Thread::Sleep(bool finishing) {
 static void ThreadFinish() { kernel->currentThread->Finish(); }
 static void ThreadBegin() { kernel->currentThread->Begin(); }
 void ThreadPrint(Thread *t) { t->Print(); }
+void ThreadAge(Thread *t) { t->updatePriority(); }  // MP3
 
 #ifdef PARISC
 
@@ -409,3 +424,46 @@ void Thread::SelfTest() {
     kernel->currentThread->Yield();
     SimpleThread(0);
 }
+
+// MP3
+void Thread::updatePriority() {
+    if (kernel->stats->totalTicks - startWaitingTick > 1500) {
+        int oldPriority = priority;
+        priority = (priority > 139 ? 149 : (priority + 10));
+        if (priority > oldPriority) {
+            DEBUG(dbgSchedule, "[C] Tick [" << kernel->stats->totalTicks << "]: Thread [" << this->getID()
+                                            << "] changes its priority from [" << oldPriority << "] to ["
+                                            << priority << "]");
+        }
+        startWaitingTick = kernel->stats->totalTicks;
+    }
+}
+
+void Thread::updateBurstTick() {
+    burstTick += (kernel->stats->totalTicks - startBurstTick);
+    startBurstTick = kernel->stats->totalTicks;
+}
+
+void Thread::leaveRunning() {
+    // Update burst tick
+    updateBurstTick();
+}
+
+void Thread::enterReady() {
+    startWaitingTick = kernel->stats->totalTicks;
+}
+
+void Thread::ReadyToRunning() {
+    startWaitingTick = startBurstTick = startRunningTick = kernel->stats->totalTicks;
+}
+
+void Thread::RunningToWaiting() {
+    double oldBurstTick = nextBurstTick;
+    leaveRunning();
+    nextBurstTick = 0.5 * burstTick + 0.5 * nextBurstTick;
+    DEBUG(dbgSchedule, "[D] Tick [" << kernel->stats->totalTicks << "]: Thread [" << this->getID()
+                                    << "] update approximate burst time, from: [" << oldBurstTick
+                                    << "], add [" << burstTick << "], to [" << nextBurstTick << "]");
+    burstTick = 0;
+}
+// MP3 end

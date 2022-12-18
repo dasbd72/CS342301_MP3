@@ -81,6 +81,9 @@ void Semaphore::P() {
     IntStatus oldLevel = interrupt->SetLevel(IntOff);
 
     while (value == 0) {               // semaphore not available
+        // MP3
+        currentThread->RunningToWaiting();
+        // MP3 end
         queue->Append(currentThread);  // so go to sleep
         currentThread->Sleep(FALSE);
     }

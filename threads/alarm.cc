@@ -48,7 +48,11 @@ void Alarm::CallBack() {
     Interrupt *interrupt = kernel->interrupt;
     MachineStatus status = interrupt->getStatus();
 
-    if (status != IdleMode) {
+    // MP3
+    kernel->scheduler->Aging();
+    bool preempted = kernel->scheduler->Preempt();
+    if (status != IdleMode && preempted) {
         interrupt->YieldOnReturn();
     }
+    // MP3 end
 }

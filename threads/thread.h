@@ -109,6 +109,33 @@ class Thread {
     int getID() { return (ID); }
     void Print() { cout << name; }
     void SelfTest();  // test whether thread impl is working
+    // MP3
+    // Called in Kernel::Exec
+    void setPriority(int P) { priority = P; }
+    int getPriority() const { return (priority); }
+    // Called when aging
+    void updatePriority();
+
+    // Called only when in ready queues
+    double getNextBurstTick() const { return (nextBurstTick); }
+    // Returns remain burst time
+    double getRemainBurstTick() const { return nextBurstTick - burstTick; }
+    // Called only when in Scheduler::Run before SWITCH, gets total running ticks
+    int getBurstTick() const { return (burstTick); }
+    // Called when leave running and Scheduler::FindNextToRun for L1 preempt
+    void updateBurstTick();
+
+    void leaveRunning();
+    void enterReady();
+    // Called in Scheduler::Run
+    void ReadyToRunning();
+    // Called in Semaphore::P
+    void RunningToWaiting();
+    // Called in Thread::Yield
+    void RunningToReady() { leaveRunning(); }
+    // Called in Thread::Finish
+    void RunningToTerminate() { leaveRunning(); }
+    // MP3 end
 
    private:
     // some of the private data for this class is listed above
@@ -119,6 +146,14 @@ class Thread {
     ThreadStatus status;  // ready, running or blocked
     char *name;
     int ID;
+    // MP3
+    int priority;          // Priority of thread
+    double nextBurstTick;  // Next approximated burst tick
+    int burstTick;         // Current accumulated burst tick
+    int startBurstTick;    // Current burst start tick
+    int startRunningTick;
+    int startWaitingTick;  // Current waiting tick in ready queue
+    // MP3 end
     void StackAllocate(VoidFunctionPtr func, void *arg);
     // Allocate a stack for thread.
     // Used internally by Fork()
@@ -138,6 +173,10 @@ class Thread {
 
 // external function, dummy routine whose sole job is to call Thread::Print
 extern void ThreadPrint(Thread *thread);
+// MP3
+// external function, dummy routine whose sole job is to call Thread::updatePriority
+extern void ThreadAge(Thread *thread);
+// MP3 end
 
 // Magical machine-dependent routines, defined in switch.s
 

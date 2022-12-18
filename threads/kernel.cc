@@ -48,6 +48,12 @@ Kernel::Kernel(int argc, char **argv) {
         } else if (strcmp(argv[i], "-e") == 0) {
             execfile[++execfileNum] = argv[++i];
             cout << execfile[execfileNum] << "\n";
+        } else if (strcmp(argv[i], "-ep") == 0) {
+            // MP3
+            execfile[++execfileNum] = argv[++i];
+            execfilePriority[execfileNum] = atoi(argv[++i]);
+            cout << execfile[execfileNum] << " " << execfilePriority[execfileNum] << "\n";
+            // MP3 end
         } else if (strcmp(argv[i], "-ci") == 0) {
             ASSERT(i + 1 < argc);
             consoleIn = argv[i + 1];
@@ -257,15 +263,19 @@ void ForkExecute(Thread *t) {
 
 void Kernel::ExecAll() {
     for (int i = 1; i <= execfileNum; i++) {
-        int a = Exec(execfile[i]);
+        // MP3
+        int a = Exec(execfile[i], execfilePriority[i]);
+        // MP3 end
     }
     currentThread->Finish();
     // Kernel::Exec();
 }
 
-int Kernel::Exec(char *name) {
+// MP3
+int Kernel::Exec(char *name, int priority) {
     t[threadNum] = new Thread(name, threadNum);
     t[threadNum]->space = new AddrSpace();
+    t[threadNum]->setPriority(priority);
     t[threadNum]->Fork((VoidFunctionPtr)&ForkExecute, (void *)t[threadNum]);
     threadNum++;
 
@@ -296,3 +306,4 @@ int Kernel::Exec(char *name) {
     //    Kernel::Run();
     //  cout << "after ThreadedKernel:Run();" << endl;  // unreachable
 }
+// MP3 end
