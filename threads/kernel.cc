@@ -108,10 +108,12 @@ void Kernel::Initialize() {
 #else
     fileSystem = new FileSystem(formatFlag);
 #endif  // FILESYS_STUB
-    postOfficeIn = new PostOfficeInput(10);
-    postOfficeOut = new PostOfficeOutput(reliability);
+    // MP3
+    // postOfficeIn = new PostOfficeInput(10);
+    // postOfficeOut = new PostOfficeOutput(reliability);
+    // MP3 end
     physPageStk = new int[NumPhysPages];
-    for (physPageStkSize = 0; physPageStkSize < NumPhysPages; physPageStkSize++) 
+    for (physPageStkSize = 0; physPageStkSize < NumPhysPages; physPageStkSize++)
         physPageStk[physPageStkSize] = physPageStkSize;
 
     interrupt->Enable();
@@ -132,8 +134,10 @@ Kernel::~Kernel() {
     delete synchConsoleOut;
     delete synchDisk;
     delete fileSystem;
-    delete postOfficeIn;
-    delete postOfficeOut;
+    // MP3
+    // delete postOfficeIn;
+    // delete postOfficeOut;
+    // MP3 end
     delete[] physPageStk;
 
     Exit(0);
