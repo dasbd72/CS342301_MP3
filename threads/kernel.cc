@@ -52,7 +52,6 @@ Kernel::Kernel(int argc, char **argv) {
             // MP3
             execfile[++execfileNum] = argv[++i];
             execfilePriority[execfileNum] = atoi(argv[++i]);
-            cout << execfile[execfileNum] << " " << execfilePriority[execfileNum] << "\n";
             // MP3 end
         } else if (strcmp(argv[i], "-ci") == 0) {
             ASSERT(i + 1 < argc);
