@@ -1,0 +1,50 @@
+# root
+DISK_0
+
+*.o
+
+# build.cygwin
+build.cygwin/*
+!build.cygwin/Makefile
+!build.cygwin/Makefile.dep
+# build.linux
+build.linux/*
+!build.linux/Makefile
+!build.linux/Makefile.dep
+# build.macosx
+build.macosx/*
+!build.macosx/Makefile
+!build.macosx/Makefile.dep
+# filesys
+filesys/*
+!filesys/*.cc
+!filesys/*.h
+# lib
+lib/*
+!lib/*.cc
+!lib/*.h
+# machine
+machine/*
+!machine/*.cc
+!machine/*.h
+# network
+network/*
+!network/*.cc
+!network/*.h
+# test
+test/*
+!test/Makefile
+!test/Makefile.dep
+!test/*.S
+!test/*.c
+!test/*.h
+# threads
+threads/*
+!threads/*.S
+!threads/*.cc
+!threads/*.h
+# userprog
+userprog/*
+!userprog/*.S
+!userprog/*.cc
+!userprog/*.h
