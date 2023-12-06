@@ -204,25 +204,25 @@ createFile: createFile.o start.o
 	$(LD) $(LDFLAGS) start.o createFile.o -o createFile.coff
 	$(COFF2NOFF) createFile.coff createFile
 
-MP2_array_test: MP2_array_test.c
+MP2_array_test.o: MP2_array_test.c
 	$(CC) $(CFLAGS) -c MP2_array_test.c
 MP2_array_test: MP2_array_test.o start.o
 	$(LD) $(LDFLAGS) start.o MP2_array_test.o -o MP2_array_test.coff
 	$(COFF2NOFF) MP2_array_test.coff MP2_array_test
 
-MP2_array_test2: MP2_array_test2.c
+MP2_array_test2.o: MP2_array_test2.c
 	$(CC) $(CFLAGS) -c MP2_array_test2.c
 MP2_array_test2: MP2_array_test2.o start.o
 	$(LD) $(LDFLAGS) start.o MP2_array_test2.o -o MP2_array_test2.coff
 	$(COFF2NOFF) MP2_array_test2.coff MP2_array_test2
 
-MP2_readonly_test: MP2_readonly_test.c
+MP2_readonly_test.o: MP2_readonly_test.c
 	$(CC) $(CFLAGS) -c MP2_readonly_test.c
 MP2_readonly_test: MP2_readonly_test.o start.o
 	$(LD) $(LDFLAGS) start.o MP2_readonly_test.o -o MP2_readonly_test.coff
 	$(COFF2NOFF) MP2_readonly_test.coff MP2_readonly_test
 
-MP2_MLE_test: MP2_MLE_test.c
+MP2_MLE_test.o: MP2_MLE_test.c
 	$(CC) $(CFLAGS) -c MP2_MLE_test.c
 MP2_MLE_test: MP2_MLE_test.o start.o
 	$(LD) $(LDFLAGS) start.o MP2_MLE_test.o -o MP2_MLE_test.coff
