@@ -446,6 +446,10 @@ void Thread::updateBurstTick() {
     startBurstTick = kernel->stats->totalTicks;
 }
 
+int Thread::getTimeQuantum() const {
+    return kernel->stats->totalTicks - startRunningTick;
+}
+
 void Thread::leaveRunning() {
     // Update burst tick
     updateBurstTick();

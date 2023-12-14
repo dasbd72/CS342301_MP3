@@ -124,6 +124,8 @@ class Thread {
     int getBurstTick() const { return (_burstTick); }
     // Called when leave running and Scheduler::FindNextToRun for L1 preempt
     void updateBurstTick();
+    // Called when checking if preempting L3 ready queue
+    int getTimeQuantum() const;
 
     void leaveRunning();
     void enterReady();

@@ -312,7 +312,7 @@ bool Scheduler::Preempt() {
                 // L2 preempts L3
                 preemtingThread = readyList2->RemoveFront();
                 DEBUG(dbgSchedule, "[B] Tick [" << kernel->stats->totalTicks << "]: Thread [" << preemtingThread->getID() << "] is removed from queue L[2]");
-            } else if (!readyList3->IsEmpty()) {
+            } else if (currentThread->getTimeQuantum() >= 100 && !readyList3->IsEmpty()) {
                 // L3 round-robin
                 preemtingThread = readyList3->RemoveFront();
                 DEBUG(dbgSchedule, "[B] Tick [" << kernel->stats->totalTicks << "]: Thread [" << preemtingThread->getID() << "] is removed from queue L[3]");
