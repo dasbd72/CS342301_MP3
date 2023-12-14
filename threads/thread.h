@@ -121,7 +121,7 @@ class Thread {
     // Returns remain burst time
     double getRemainBurstTick() const { return nextBurstTick - burstTick; }
     // Called only when in Scheduler::Run before SWITCH, gets total running ticks
-    int getBurstTick() const { return (burstTick); }
+    int getBurstTick() const { return (_burstTick); }
     // Called when leave running and Scheduler::FindNextToRun for L1 preempt
     void updateBurstTick();
 
@@ -149,6 +149,7 @@ class Thread {
     // MP3
     int priority;          // Priority of thread
     double nextBurstTick;  // Next approximated burst tick
+    int _burstTick;         // Recorded last accumulated burst tick
     int burstTick;         // Current accumulated burst tick
     int startBurstTick;    // Current burst start tick
     int startRunningTick;

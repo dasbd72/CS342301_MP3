@@ -50,6 +50,7 @@ Thread::Thread(char *threadName, int threadID) {
     // MP3
     priority = 0;
     nextBurstTick = 0.0;
+    _burstTick = 0;
     burstTick = 0;
     startBurstTick = 0;
     startRunningTick = 0;
@@ -441,6 +442,7 @@ void Thread::updatePriority() {
 
 void Thread::updateBurstTick() {
     burstTick += (kernel->stats->totalTicks - startBurstTick);
+    _burstTick = burstTick;
     startBurstTick = kernel->stats->totalTicks;
 }
 
@@ -464,6 +466,7 @@ void Thread::RunningToWaiting() {
     DEBUG(dbgSchedule, "[D] Tick [" << kernel->stats->totalTicks << "]: Thread [" << this->getID()
                                     << "] update approximate burst time, from: [" << oldBurstTick
                                     << "], add [" << burstTick << "], to [" << nextBurstTick << "]");
+    _burstTick = burstTick;
     burstTick = 0;
 }
 // MP3 end
