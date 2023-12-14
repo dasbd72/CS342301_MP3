@@ -53,3 +53,6 @@ userprog/*
 !userprog/*.S
 !userprog/*.cc
 !userprog/*.h
+
+mp3.sh
+output*.log
